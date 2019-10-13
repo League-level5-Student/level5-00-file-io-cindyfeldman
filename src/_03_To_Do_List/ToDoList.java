@@ -2,6 +2,12 @@ package _03_To_Do_List;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -16,22 +22,36 @@ public class ToDoList implements ActionListener {
 	JButton removeTasks;
 	JButton saveList;
 	JButton loadList;
-String[] ask;
+	String sf;
+
+ArrayList<String> list ;
 	public static void main(String[] args) {
 		ToDoList t = new ToDoList();
 		t.create();
 	}
 	void create() {
-		panel = new JPanel();
+		
 		frame = new JFrame();
+		panel = new JPanel();
 		frame.add(panel);
+		frame.setVisible(true);
 		addTask = new JButton();
 		viewTasks = new JButton();
 		removeTasks = new JButton();
 		saveList = new JButton();
 		loadList = new JButton();
+	
+		addTask.setText("Add Text");
+		viewTasks.setText("View Tasks");
+		removeTasks.setText("Remove tasks");
+		saveList.setText("Save List");
+		loadList.setText("Load List");
 		panel.add(addTask);
-		 
+		panel.add(viewTasks);
+		panel.add(removeTasks);
+		panel.add(saveList);
+		panel.add(loadList);
+		 frame.pack();
 		addTask.addActionListener(this);
 		 viewTasks.addActionListener(this);
 		 removeTasks.addActionListener(this);
@@ -63,19 +83,59 @@ String[] ask;
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
+		list = new ArrayList<String>();
 		JButton buttonpressed =  (JButton)e.getSource();
 		if(buttonpressed==addTask) {
-			for (int i = 0; i < ask.length; i++) {
-				
-			
-			ask[i] = JOptionPane.showInputDialog("give me a task)");
-			}
-		}
-		else if(buttonpressed == viewTasks) {
-			for (int i = 0; i < ask.length; i++) {
-				System.out.println(ask[i]);
-			}
+			String s  = JOptionPane.showInputDialog("give me a task");
+		for (int i = 0; i < list.size(); i++) {
+		sf = list.get(i);
+		}sf = s;
+	
+		
 		}
 		
+		else if(buttonpressed == viewTasks) {
+		list.add(sf);
+			System.out.println(list);
+		}
+		else if(buttonpressed == removeTasks) { 
+			String remove = JOptionPane.showInputDialog("Which Item do you want to remove?");
+			for (int i = 0; i < list.size(); i++) {
+				if(remove.equals(list.get(i))){
+					list.remove(list.get(i));
+				}
+			}}
+			else if(buttonpressed == saveList) {
+				try {
+					FileWriter fw = new FileWriter("src/_03_To_Do_List/text.txt",true);
+			
+				for (int i = 0; i < list.size(); i++) {
+					fw.write(list.get(i));
+				}}
+				catch(IOException ex) {
+					ex.printStackTrace();
+				}
+			}
+			else {
+			String s =	JOptionPane.showInputDialog("Where is the file located?");
+			try {
+				BufferedReader br = new BufferedReader(new FileReader(s));
+				
+			String line = br.readLine();
+			while(line!=null) {
+				System.out.println(line);
+				line = br.readLine();}
+				br.close();
+			}	
+			catch(FileNotFoundException f1) {
+				f1.printStackTrace();
+		
+			}
+			catch(IOException f2) {
+				f2.printStackTrace();
+			}
+			
 	}
-}
+		
+	}}
+
